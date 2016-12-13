@@ -1,9 +1,14 @@
 package com.vuuh.vuuhprototype;
 
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -151,8 +156,81 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
     }
 
     public void showMessageDialog(String message) {
-        DialogFragment fragment = MessageDialogFragment.newInstance("Scan Results", message, this);
-        fragment.show(getActivity().getSupportFragmentManager(), "scan_results");
+
+        //open here custom chrome tab
+        openCustomTab();
+//        DialogFragment fragment = MessageDialogFragment.newInstance("Scan Results", message, this);
+//        fragment.show(getActivity().getSupportFragmentManager(), "scan_results");
+    }
+
+    private void openCustomTab() {
+        String url = "http://www.vuuh.dk/diesel-s-aca-9367/";
+
+        int color = getResources().getColor(R.color.colorPrimary);
+        int secondaryColor = getResources().getColor(R.color.vuuh_accent);
+
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setToolbarColor(color);
+        intentBuilder.setSecondaryToolbarColor(secondaryColor);
+
+//        if (mShowActionButtonCheckbox.isChecked()) {
+//            //Generally you do not want to decode bitmaps in the UI thread. Decoding it in the
+//            //UI thread to keep the example short.
+//            String actionLabel = getString(R.string.label_action);
+//            Bitmap icon = BitmapFactory.decodeResource(getResources(),
+//                    android.R.drawable.ic_menu_share);
+//            PendingIntent pendingIntent =
+//                    createPendingIntent(ActionBroadcastReceiver.ACTION_ACTION_BUTTON);
+//            intentBuilder.setActionButton(icon, actionLabel, pendingIntent);
+//        }
+
+//        if (mAddMenusCheckbox.isChecked()) {
+//            String menuItemTitle = getString(R.string.menu_item_title);
+//            PendingIntent menuItemPendingIntent =
+//                    createPendingIntent(ActionBroadcastReceiver.ACTION_MENU_ITEM);
+//            intentBuilder.addMenuItem(menuItemTitle, menuItemPendingIntent);
+//        }
+
+//        if (mAddDefaultShareCheckbox.isChecked()) {
+//            intentBuilder.addDefaultShareMenuItem();
+//        }
+
+//        if (mToolbarItemCheckbox.isChecked()) {
+//            //Generally you do not want to decode bitmaps in the UI thread. Decoding it in the
+//            //UI thread to keep the example short.
+//            String actionLabel = getString(R.string.label_action);
+//            Bitmap icon = BitmapFactory.decodeResource(getResources(),
+//                    android.R.drawable.ic_menu_share);
+//            PendingIntent pendingIntent =
+//                    createPendingIntent(ActionBroadcastReceiver.ACTION_TOOLBAR);
+//            intentBuilder.addToolbarItem(TOOLBAR_ITEM_ID, icon, actionLabel, pendingIntent);
+//        }
+
+//        intentBuilder.setShowTitle(mShowTitleCheckBox.isChecked());
+
+//        if (mAutoHideAppBarCheckbox.isChecked()) {
+//            intentBuilder.enableUrlBarHiding();
+//        }
+
+//        if (mCustomBackButtonCheckBox.isChecked()) {
+//            intentBuilder.setCloseButtonIcon(
+//                    BitmapFactory.decodeResource(getResources(), R.drawable.ic_arrow_back));
+//        }
+
+        intentBuilder.setStartAnimations(getContext(), R.anim.slide_in_right, R.anim.slide_out_left);
+        intentBuilder.setExitAnimations(getContext(), android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right);
+
+        CustomTabActivityHelper.openCustomTab(getActivity()
+                , intentBuilder.build(), Uri.parse(url), new WebviewFallback());
+    }
+
+    private PendingIntent createPendingIntent(int actionSourceId) {
+        Intent actionIntent = new Intent(
+                getContext(), ActionBroadcastReceiver.class);
+        actionIntent.putExtra(ActionBroadcastReceiver.KEY_ACTION_SOURCE, actionSourceId);
+        return PendingIntent.getBroadcast(
+                getContext(), actionSourceId, actionIntent, 0);
     }
 
     public void closeMessageDialog() {

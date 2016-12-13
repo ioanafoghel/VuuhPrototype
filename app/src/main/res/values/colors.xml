@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#415f63</color>
     <color name="colorPrimaryDark">#262727</color>
-    <color name="colorAccent">#28b675</color>
+    <color name="colorAccent">#F3F2F3</color>
     <color name="colorSplashBackground">#ffffff</color>
+    <color name="vuuh_accent">#27c78b</color>
 </resources>
