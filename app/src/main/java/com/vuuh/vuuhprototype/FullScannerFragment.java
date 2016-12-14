@@ -165,7 +165,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
 
     private void openCustomTab() {
 
-        String url = "http://www.vuuh.dk/diesel-s-aca-9367/";
+        String url = "http://www.vuuh.dk/cheap-monday-tight-jeans-58592/";
 
         int color = getResources().getColor(R.color.colorPrimary);
         int secondaryColor = getResources().getColor(R.color.vuuh_accent);
@@ -174,7 +174,6 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         intentBuilder.setToolbarColor(color);
         intentBuilder.setSecondaryToolbarColor(secondaryColor);
 
-
         //Generally you do not want to decode bitmaps in the UI thread. Decoding it in the
         //UI thread to keep the example short.
         String actionLabel = getString(R.string.label_action);
@@ -182,8 +181,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
                 android.R.drawable.ic_menu_save);
         PendingIntent pendingIntent =
                 createPendingIntent(ActionBroadcastReceiver.ACTION_ACTION_BUTTON);
-        intentBuilder.setActionButton(icon, actionLabel, pendingIntent);
-
+        intentBuilder.setActionButton(icon, actionLabel, pendingIntent,true);
         intentBuilder.setStartAnimations(getContext(), R.anim.slide_in_right, R.anim.slide_out_left);
         intentBuilder.setExitAnimations(getContext(), android.R.anim.slide_in_left,
                 android.R.anim.slide_out_right);

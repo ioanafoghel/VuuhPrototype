@@ -19,6 +19,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * A BroadcastReceiver that handles the Action Intent from the Custom Tab and shows the Url
  * in a Toast.
@@ -28,6 +31,9 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
     public static final int ACTION_ACTION_BUTTON = 1;
     public static final int ACTION_MENU_ITEM = 2;
     public static final int ACTION_TOOLBAR = 3;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("bookmarks");
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -42,6 +48,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
     private String getToastText(Context context, int actionId, String url) {
         switch (actionId) {
             case ACTION_ACTION_BUTTON:
+                saveBookMark();
                 return context.getString(R.string.action_button_toast_text, url);
             case ACTION_MENU_ITEM:
                 return context.getString(R.string.menu_item_toast_text, url);
@@ -50,5 +57,14 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
             default:
                 return context.getString(R.string.unknown_toast_text, url);
         }
+    }
+
+    private void saveBookMark(){
+
+        Bookmark bookmark = new Bookmark();
+        bookmark.setName("Cheap-Monday-Tight-Jeans");
+        bookmark.setUrl("http://www.vuuh.dk/cheap-monday-tight-jeans-58592/");
+
+        myRef.push().setValue(bookmark);
     }
 }

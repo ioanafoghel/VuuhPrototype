@@ -11,17 +11,28 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class BookmarksActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private Class<?> mClss;
-
+    private RecyclerView bookmarkList;
+    // Write a message to the database
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("bookmarks");
+    private FireBaseBookmarksAdapter fireBaseBookmarksAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +40,37 @@ public class BookmarksActivity extends AppCompatActivity
         setContentView(R.layout.activity_bookmarks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        bookmarkList = (RecyclerView) findViewById(R.id.bookmarkList);
+        bookmarkList.setHasFixedSize(true);
+        bookmarkList.setLayoutManager(new LinearLayoutManager(this));
+
+        fireBaseBookmarksAdapter = new FireBaseBookmarksAdapter(
+                Bookmark.class,
+                R.layout.list_item_bookmark,
+                FireBaseBookmarksAdapter.ItemViewHolder.class,
+                myRef);
+
+        bookmarkList.setAdapter(fireBaseBookmarksAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                final int fromPos = viewHolder.getAdapterPosition();
+                final int toPos = target.getAdapterPosition();
+                // move item in `fromPos` to `toPos` in adapter.
+                return true;// true if moved, false otherwise
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.i("Swipe to delete", viewHolder.getAdapterPosition() + "");
+                fireBaseBookmarksAdapter.getRef(viewHolder.getAdapterPosition()).removeValue();
+            }
+        });
+
+        itemTouchHelper.attachToRecyclerView(bookmarkList);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
