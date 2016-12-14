@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
@@ -43,7 +44,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
         mScannerView = new ZXingScannerView(getActivity());
-        if(state != null) {
+        if (state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
             mSelectedIndices = state.getIntegerArrayList(SELECTED_FORMATS);
@@ -64,12 +65,12 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         setHasOptionsMenu(true);
     }
 
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem menuItem;
 
-        if(mFlash) {
+        if (mFlash) {
             menuItem = menu.add(Menu.NONE, R.id.menu_flash, 0, R.string.flash_on);
         } else {
             menuItem = menu.add(Menu.NONE, R.id.menu_flash, 0, R.string.flash_off);
@@ -77,7 +78,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         MenuItemCompat.setShowAsAction(menuItem, MenuItem.SHOW_AS_ACTION_NEVER);
 
 
-        if(mAutoFocus) {
+        if (mAutoFocus) {
             menuItem = menu.add(Menu.NONE, R.id.menu_auto_focus, 0, R.string.auto_focus_on);
         } else {
             menuItem = menu.add(Menu.NONE, R.id.menu_auto_focus, 0, R.string.auto_focus_off);
@@ -97,7 +98,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         switch (item.getItemId()) {
             case R.id.menu_flash:
                 mFlash = !mFlash;
-                if(mFlash) {
+                if (mFlash) {
                     item.setTitle(R.string.flash_on);
                 } else {
                     item.setTitle(R.string.flash_off);
@@ -106,7 +107,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
                 return true;
             case R.id.menu_auto_focus:
                 mAutoFocus = !mAutoFocus;
-                if(mAutoFocus) {
+                if (mAutoFocus) {
                     item.setTitle(R.string.auto_focus_on);
                 } else {
                     item.setTitle(R.string.auto_focus_off);
@@ -151,7 +152,8 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(getActivity().getApplicationContext(), notification);
             r.play();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         showMessageDialog("Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
     }
 
@@ -159,11 +161,10 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
 
         //open here custom chrome tab
         openCustomTab();
-//        DialogFragment fragment = MessageDialogFragment.newInstance("Scan Results", message, this);
-//        fragment.show(getActivity().getSupportFragmentManager(), "scan_results");
     }
 
     private void openCustomTab() {
+
         String url = "http://www.vuuh.dk/diesel-s-aca-9367/";
 
         int color = getResources().getColor(R.color.colorPrimary);
@@ -173,49 +174,15 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         intentBuilder.setToolbarColor(color);
         intentBuilder.setSecondaryToolbarColor(secondaryColor);
 
-//        if (mShowActionButtonCheckbox.isChecked()) {
-//            //Generally you do not want to decode bitmaps in the UI thread. Decoding it in the
-//            //UI thread to keep the example short.
-//            String actionLabel = getString(R.string.label_action);
-//            Bitmap icon = BitmapFactory.decodeResource(getResources(),
-//                    android.R.drawable.ic_menu_share);
-//            PendingIntent pendingIntent =
-//                    createPendingIntent(ActionBroadcastReceiver.ACTION_ACTION_BUTTON);
-//            intentBuilder.setActionButton(icon, actionLabel, pendingIntent);
-//        }
 
-//        if (mAddMenusCheckbox.isChecked()) {
-//            String menuItemTitle = getString(R.string.menu_item_title);
-//            PendingIntent menuItemPendingIntent =
-//                    createPendingIntent(ActionBroadcastReceiver.ACTION_MENU_ITEM);
-//            intentBuilder.addMenuItem(menuItemTitle, menuItemPendingIntent);
-//        }
-
-//        if (mAddDefaultShareCheckbox.isChecked()) {
-//            intentBuilder.addDefaultShareMenuItem();
-//        }
-
-//        if (mToolbarItemCheckbox.isChecked()) {
-//            //Generally you do not want to decode bitmaps in the UI thread. Decoding it in the
-//            //UI thread to keep the example short.
-//            String actionLabel = getString(R.string.label_action);
-//            Bitmap icon = BitmapFactory.decodeResource(getResources(),
-//                    android.R.drawable.ic_menu_share);
-//            PendingIntent pendingIntent =
-//                    createPendingIntent(ActionBroadcastReceiver.ACTION_TOOLBAR);
-//            intentBuilder.addToolbarItem(TOOLBAR_ITEM_ID, icon, actionLabel, pendingIntent);
-//        }
-
-//        intentBuilder.setShowTitle(mShowTitleCheckBox.isChecked());
-
-//        if (mAutoHideAppBarCheckbox.isChecked()) {
-//            intentBuilder.enableUrlBarHiding();
-//        }
-
-//        if (mCustomBackButtonCheckBox.isChecked()) {
-//            intentBuilder.setCloseButtonIcon(
-//                    BitmapFactory.decodeResource(getResources(), R.drawable.ic_arrow_back));
-//        }
+        //Generally you do not want to decode bitmaps in the UI thread. Decoding it in the
+        //UI thread to keep the example short.
+        String actionLabel = getString(R.string.label_action);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                android.R.drawable.ic_menu_save);
+        PendingIntent pendingIntent =
+                createPendingIntent(ActionBroadcastReceiver.ACTION_ACTION_BUTTON);
+        intentBuilder.setActionButton(icon, actionLabel, pendingIntent);
 
         intentBuilder.setStartAnimations(getContext(), R.anim.slide_in_right, R.anim.slide_out_left);
         intentBuilder.setExitAnimations(getContext(), android.R.anim.slide_in_left,
@@ -244,7 +211,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
     public void closeDialog(String dialogName) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         DialogFragment fragment = (DialogFragment) fragmentManager.findFragmentByTag(dialogName);
-        if(fragment != null) {
+        if (fragment != null) {
             fragment.dismiss();
         }
     }
@@ -271,17 +238,17 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
 
     public void setupFormats() {
         List<BarcodeFormat> formats = new ArrayList<BarcodeFormat>();
-        if(mSelectedIndices == null || mSelectedIndices.isEmpty()) {
+        if (mSelectedIndices == null || mSelectedIndices.isEmpty()) {
             mSelectedIndices = new ArrayList<Integer>();
-            for(int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
+            for (int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
                 mSelectedIndices.add(i);
             }
         }
 
-        for(int index : mSelectedIndices) {
+        for (int index : mSelectedIndices) {
             formats.add(ZXingScannerView.ALL_FORMATS.get(index));
         }
-        if(mScannerView != null) {
+        if (mScannerView != null) {
             mScannerView.setFormats(formats);
         }
     }
