@@ -8,7 +8,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
 
 /**
- * Created by alinbaltatescu on 12/14/16.
+ * Created by ioanafoghel on 12/14/16.
  */
 
 public class FireBaseBookmarksAdapter extends FirebaseRecyclerAdapter<Bookmark, FireBaseBookmarksAdapter.ItemViewHolder> {

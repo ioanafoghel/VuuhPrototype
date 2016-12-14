@@ -1,7 +1,7 @@
 package com.vuuh.vuuhprototype;
 
 /**
- * Created by alinbaltatescu on 12/14/16.
+ * Created by ioanafoghel on 12/14/16.
  */
 
 public class Bookmark {

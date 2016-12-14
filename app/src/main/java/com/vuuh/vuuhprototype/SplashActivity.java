@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by alinbaltatescu on 11/26/16.
+ * Created by ioanafoghel on 11/26/16.
  */
 
 public class SplashActivity extends AppCompatActivity{
