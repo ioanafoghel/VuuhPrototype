@@ -235,9 +235,9 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
     }
 
     public void setupFormats() {
-        List<BarcodeFormat> formats = new ArrayList<BarcodeFormat>();
+        List<BarcodeFormat> formats = new ArrayList<>();
         if (mSelectedIndices == null || mSelectedIndices.isEmpty()) {
-            mSelectedIndices = new ArrayList<Integer>();
+            mSelectedIndices = new ArrayList<>();
             for (int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
                 mSelectedIndices.add(i);
             }

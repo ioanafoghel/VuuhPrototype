@@ -49,7 +49,9 @@ public class BookmarksActivity extends AppCompatActivity
                 Bookmark.class,
                 R.layout.list_item_bookmark,
                 FireBaseBookmarksAdapter.ItemViewHolder.class,
-                myRef);
+                myRef,
+                getApplicationContext(),
+                this);
 
         bookmarkList.setAdapter(fireBaseBookmarksAdapter);
 
